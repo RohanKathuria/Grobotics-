@@ -1,0 +1,16 @@
+import math
+
+import random
+for x in range (100):
+  hr = float(random.randint(13,86))
+  hum = (-.007* ((hr-50)*(hr-50))) + 10
+  tr = float(random.randint(0,56))
+  tem = (-.007* ((tr-20)*(tr-20))) + 10
+  rr = float(random.randint(163,236))
+  red = (-.007* ((rr-200)*(tr-200))) + 10
+  gr = float(random.randint(13,86))
+  gre = (-.007* ((gr-50)*(gr-50))) + 10
+  br = float(random.randint(163,236))
+  blu = (-.007* ((br-200)*(br-200))) + 10
+  avgr = (int(hum) + int(tem) + int(red) + int(gre) + int(blu))/5
+  print(int(avgr), hr,tr,gr,br, 0, 0)
