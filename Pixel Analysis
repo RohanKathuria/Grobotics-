@@ -1,0 +1,50 @@
+from PIL import Image , ImageEnhance
+import numpy as np
+import skimage.measure
+
+
+#Function to get the highest green pixel in quadrant q of the image
+def height (q, path) :
+  filename = (path)
+  img = Image.open(filename)
+
+  #Reduce Brightness of image
+  #enhancer = ImageEnhance.Brightness(img)
+  #img = enhancer.enhance(1)
+
+  #If the Data isnt in RGB then convert it
+  if img.mode != "RGB" :
+    img = img.convert('RGB')
+
+  #Save the image data to an Array called iar
+  # format for iar is iar[yvalue, xvalue, color(0 is red, 1 is green and 2 is blue)] = color value(0-255)
+  # 3D array eg : iar[0,0,0] will give you red value at y = 0 & x = 0
+  iar = np.asarray(img)
+
+  #Max Pool it
+  fi = skimage.measure.block_reduce(iar, (2,2,1), np.max)
+  print ( fi.shape)
+  minx = int( (q -1) * ( (fi.shape [1] /3)-1))
+  maxx = int ( (q) * ( (fi.shape [1] /3)-1))
+  h = 0
+  y = -1
+  mx = 0
+  x = minx
+  #Run through all possible y values in the image
+  while y < fi.shape[0] - 1: 
+    x = minx
+    y = y+1
+    # run through all x values greater than the minx and less than the maxx
+    while x <maxx:
+      x = x+1
+      #If pixel is green and it is taller than the last tellest green pixel
+      if fi[y,x,0] < 150 and fi[y,x,1] > 150 and fi[y,x,2] < 150 and y > h:
+        #Save the current height to the tallest hieght
+        h = y
+        mx = x
+  return h 
+
+#Printing the value for the highest green pixel
+print(height(1, "#Image goes here"))
+print(height(2, "#Image goes here"))
+print(height(3, "#Image goes here"))
